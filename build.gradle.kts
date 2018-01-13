@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-group = "io.juici"
+group = "xyz.mysongbird"
 version = "0.1"
 
 plugins {
@@ -14,7 +14,8 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(group= "com.mashape.unirest", name= "unirest-java", version = "1.4.9")
+
+    implementation(group = "com.mashape.unirest", name = "unirest-java", version = "1.4.9")
 }
 
 tasks.withType<KotlinCompile> {
