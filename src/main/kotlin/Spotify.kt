@@ -7,20 +7,19 @@ import java.util.*
 
 object Spotify {
 
-
     init {
-        UnirestSetup.verify()
+        GsonMapper.init()
     }
 
     data class CategoriesResponse(val categories: CategoriesData)
     data class CategoriesData(
-        val href: String,
-        val items: Array<CategoryData>,
-        val limit: Int,
-        val next: String?,
-        val offset: Int,
-        val previous: String?,
-        val total: String)
+            val href: String,
+            val items: Array<CategoryData>,
+            val limit: Int,
+            val next: String?,
+            val offset: Int,
+            val previous: String?,
+            val total: String)
 
     data class CategoryData(val href: String, val icons: Array<Icon>, val id: String, val name: String)
     data class Icon(val height: Int, val url: String, val width: String)
@@ -29,12 +28,13 @@ object Spotify {
         queryString("limit", "50")
     }.categories.items
 
-    data class PlaylistsResponse(val playlists:PlaylistData)
+    data class PlaylistsResponse(val playlists: PlaylistData)
     data class PlaylistData(val items: Array<Playlist>)
     data class Playlist(val id: String)
+
     fun getPlaylistsWithCategory(categoryId: String) =
-        getAuth<PlaylistsResponse>("https://api.spotify.com/v1/browse/categories/$categoryId/playlists")
-            .playlists.items
+            getAuth<PlaylistsResponse>("https://api.spotify.com/v1/browse/categories/$categoryId/playlists")
+                    .playlists.items
 
     inline fun <reified T> BaseRequest.safeGet(): T {
         val response = this.asObject(T::class.java)
@@ -44,29 +44,30 @@ object Spotify {
                 |$text""".trimMargin())
         }
         return response
-            .body
+                .body
     }
+
     inline fun <reified T> postTokenless(url: String, body: String): T {
-        val raw = Store.spotId + ":" + Store.spotSecret
+        val raw = Store.SPOT_ID + ":" + Store.SPOT_SECRET
         val data = Base64.getEncoder().encodeToString(raw.toByteArray())
         return Unirest.post(url)
-            .header()
-            .header("Authorization", "Basic $data")
-            .body(body)
-            .safeGet()
+                .header()
+                .header("Authorization", "Basic $data")
+                .body(body)
+                .safeGet()
     }
 
     inline fun <reified T> getAuth(url: String, block: GetRequest.() -> Unit = {}): T {
         val get = Unirest.get(url)
         get.block()
         return get.header()
-            .header("Authorization", "Bearer ${Store.spotToken}")
-            .safeGet()
+                .header("Authorization", "Bearer ${Store.SPOT_TOKEN}")
+                .safeGet()
     }
 
     fun <T : HttpRequest> T.header(): T {
         this.header("cache-control", "no-cache")
-            .header("content-type", "application/x-www-form-urlencoded")
+                .header("content-type", "application/x-www-form-urlencoded")
         return this
     }
 
