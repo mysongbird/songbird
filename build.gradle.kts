@@ -5,6 +5,7 @@ version = "0.1"
 
 plugins {
     kotlin("jvm") version "1.2.10"
+    idea
 }
 
 repositories {
@@ -13,6 +14,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation(group= "com.mashape.unirest", name= "unirest-java", version = "1.4.9")
 }
 
 tasks.withType<KotlinCompile> {
