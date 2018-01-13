@@ -3,8 +3,8 @@ import kotlin.reflect.KProperty
 object Store {
 
     class PropertyDelegate(val name: String) {
-        operator fun getValue(t: Any, string: KProperty<*>): String? {
-            return System.getenv(name)
+        operator fun getValue(t: Any, string: KProperty<*>): String {
+            return System.getenv(name) ?: throw AssertionError("Unset property: $name")
         }
     }
 

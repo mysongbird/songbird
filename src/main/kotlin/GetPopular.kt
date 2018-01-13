@@ -1,3 +1,8 @@
 fun main(args: Array<String>) {
-    Spotify.getPopular("gb")
+    Spotify.getCategories().forEach {
+        println("-----------")
+        Spotify.getPlaylistsWithCategory(it.id).forEach {
+            println(it)
+        }
+    }
 }
