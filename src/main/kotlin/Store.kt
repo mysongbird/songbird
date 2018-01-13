@@ -4,7 +4,7 @@ object Store {
 
     class PropertyDelegate(val name: String) {
         operator fun getValue(t: Any, string: KProperty<*>): String? {
-            return System.getProperty(name)
+            return System.getenv(name)
         }
     }
 
