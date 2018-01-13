@@ -2,13 +2,14 @@ import kotlin.reflect.KProperty
 
 object Store {
 
-    class PropertyDelegate(val name: String) {
-        operator fun getValue(t: Any, string: KProperty<*>): String {
+    class PropertyDelegate(private val name: String) {
+        
+        operator fun getValue(thisRef: Any, property: KProperty<*>): String {
             return System.getenv(name) ?: throw AssertionError("Unset property: $name")
         }
     }
 
-    val spotId by PropertyDelegate("SPOT_ID")
-    val spotSecret by PropertyDelegate("SPOT_SECRET")
-    val spotToken by PropertyDelegate("SPOT_TOKEN")
+    val SPOT_ID by PropertyDelegate("SPOT_ID")
+    val SPOT_SECRET by PropertyDelegate("SPOT_SECRET")
+    val SPOT_TOKEN by PropertyDelegate("SPOT_TOKEN")
 }
