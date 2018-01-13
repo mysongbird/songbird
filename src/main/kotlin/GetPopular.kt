@@ -1,3 +1,3 @@
 fun main(args: Array<String>) {
-    Spotify().getPopular("gb")
+    Spotify.getPopular("gb")
 }
