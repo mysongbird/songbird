@@ -7,12 +7,15 @@ fun main(args: Array<String>) {
 }
 
 fun makeToken(): String {
-    val data = Base64.getEncoder().encodeToString("a".toByteArray())
+    val raw = Store.spotId + ":" + Store.spotSecret
+    val data = Base64.getEncoder().encodeToString(raw.toByteArray())
     val body = JSONObject()
     body.put("grant_type", "client_credentials")
     val r = Unirest.post("https://accounts.spotify.com/api/token")
         .header("Authorization", "Basic $data")
         .body(body)
+        .asString()
         .body
+    println(r)
     return ""
 }
