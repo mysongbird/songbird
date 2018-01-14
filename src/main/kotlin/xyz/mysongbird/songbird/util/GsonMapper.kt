@@ -1,3 +1,5 @@
+package xyz.mysongbird.songbird.util
+
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.mashape.unirest.http.ObjectMapper
@@ -7,11 +9,11 @@ class GsonMapper : ObjectMapper {
 
     companion object {
         private val gson = Gson()
-        private var _init = false
+        private var ready = false
 
         fun init() {
-            if (!_init) {
-                _init = true
+            if (!ready) {
+                ready = true
                 Unirest.setObjectMapper(GsonMapper())
             }
         }
@@ -21,7 +23,7 @@ class GsonMapper : ObjectMapper {
         }
     }
 
-    override fun <T : Any?> readValue(value: String?, type: Class<T>?): T {
+    override fun <T : Any> readValue(value: String?, type: Class<T>): T? {
         return try {
             gson.fromJson(value, type)
         } catch (e: JsonSyntaxException) {
